@@ -223,6 +223,19 @@ UPDATE Pessoa SET cpf = '46589273109' WHERE id_pessoa = 9;
 UPDATE Pessoa SET cpf = '13978265430' WHERE id_pessoa = 10;
 UPDATE Pessoa SET cpf = '89012347562' WHERE id_pessoa = 11;
 
+SELECT Pessoa.nome_pessoa, Imovel.desc_imovel, Contrato.valor_aluguel, Contrato.data_contrato
+FROM Contrato
+INNER JOIN Pessoa ON Contrato.id_inquilino = Pessoa.id_pessoa
+INNER JOIN Imovel ON Contrato.id_imovel = Imovel.id_imovel;
+
+SELECT Imovel.endereco_imovel, Imovel.tipo_imovel, Cidade.nome_cidade, Cidade.uf
+FROM Imovel
+INNER JOIN Cidade ON Imovel.id_cidade = Cidade.id_cidade;
+
+SELECT Contrato.id_contrato, Pessoa_Inquilino.nome_pessoa AS Inquilino, Pessoa_Fiador.nome_pessoa AS Fiador, Contrato.valor_aluguel
+FROM Contrato
+INNER JOIN Pessoa AS Pessoa_Inquilino ON Contrato.id_inquilino = Pessoa_Inquilino.id_pessoa
+INNER JOIN Pessoa AS Pessoa_Fiador ON Contrato.id_fiador = Pessoa_Fiador.id_pessoa;
 
 
 
