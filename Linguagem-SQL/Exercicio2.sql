@@ -1,4 +1,3 @@
-
 DROP DATABASE IF EXISTS Imobiliaria;
 CREATE DATABASE Imobiliaria;
 USE Imobiliaria;
@@ -8,7 +7,7 @@ CREATE TABLE Cidade (
     id_cidade BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     nome_cidade VARCHAR(50) NOT NULL,
     uf VARCHAR(2) NOT NULL
-);
+) ENGINE=InnoDB;
 
 -- Tabela: Imovel
 CREATE TABLE Imovel (
@@ -21,7 +20,7 @@ CREATE TABLE Imovel (
     cor VARCHAR(10),
     situacao_imovel VARCHAR(50) NOT NULL,
     FOREIGN KEY (id_cidade) REFERENCES Cidade(id_cidade)
-);
+) ENGINE=InnoDB;
 
 -- Tabela: Pessoa
 CREATE TABLE Pessoa (
@@ -34,7 +33,7 @@ CREATE TABLE Pessoa (
     telefone BIGINT,
     cpf VARCHAR(11) NOT NULL,
     CONSTRAINT cidade_idcidade_fk FOREIGN KEY (id_cidade) REFERENCES Cidade(id_cidade)
-);
+) ENGINE=InnoDB;
 
 -- Tabela: Proprietario
 CREATE TABLE Proprietario (
@@ -42,7 +41,7 @@ CREATE TABLE Proprietario (
     id_imovel INT,
     percent_propriedade INT,
     FOREIGN KEY(id_imovel) REFERENCES Imovel(id_imovel)
-);
+) ENGINE=InnoDB;
 
 -- Tabela: Contrato
 CREATE TABLE Contrato (
@@ -67,7 +66,7 @@ CREATE TABLE Recebimento_Aluguel (
     juros_recebimento DOUBLE NOT NULL,
     multas_recebimento DOUBLE,
     FOREIGN KEY (id_contrato) REFERENCES Contrato(id_contrato)
-);
+) ENGINE=InnoDB;
 
 -- Tabela: Pagamento_Proprietario
 CREATE TABLE Pagamento_Proprietario (
@@ -78,7 +77,7 @@ CREATE TABLE Pagamento_Proprietario (
     FOREIGN KEY (id_contrato) REFERENCES Contrato(id_contrato),
     FOREIGN KEY (id_proprietario) REFERENCES Proprietario(id_proprietario),
     FOREIGN KEY (data_pagamento) REFERENCES Recebimento_Aluguel(data_recebimento)
-);
+) ENGINE=InnoDB;
 
 
 -- Cidades da Região
@@ -162,14 +161,8 @@ INSERT INTO Contrato (id_imovel, id_inquilino, id_fiador, data_contrato, valor_a
 (10, 26, 8, '2025-06-15', 1050.00, 11, 24);
 
 SELECT * FROM Cidade;
-
-
 SELECT * FROM Imovel;
-
-
 SELECT * FROM Pessoa;
-
-
 SELECT * FROM Contrato;
 
 
@@ -349,4 +342,10 @@ WHERE uf = 'sul';
 SELECT endereco_pessoa, valor_aluguel FROM contrato
 INNER JOIN pessoa ON  contrato.id_inquilino = pessoa.id_pessoa
 order by valor_aluguel ASC;
+
+ SELECT desc_imovel, endereco_imovel, id_cidade FROM Imovel
+ WHERE id_cidade IN (SELECT id_cidade FROM Imovel WHERE id_cidade < 4);
+ 
+ SELECT id_imovel, id_inquilino, id_fiador, data_contrato, valor_aluguel FROM Contrato
+ WHERE valor_aluguel IN ( SELECT valor_aluguel FROM Contrato WHERE valor_aluguel < 1200)
 
